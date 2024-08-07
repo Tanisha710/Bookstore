@@ -1,10 +1,29 @@
-import React from 'react'
-import list from "../../public/list.json"
+import React, { useEffect, useState } from 'react'
+/*import list from "../../public/list.json"*/
 import Card from './Card'
 import { Link } from 'react-router-dom'
+import axios from "axios";
 
 const Course = () => {
+    const [book, setBook] = useState([]);
+    useEffect(() => {
+      const getBook = async () => {
+        try
+         { 
+          const res = await axios.get("http://localhost:4001/book");
+          console.log(res.data);
+          setBook(res.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      getBook();
+    }, []);
+
   return (
+/*api ko call kr rhe hai data mangane k liye 
+empty array pass krenge taki bs ek baar hi run kre*/
+
     <>
     <div className='max-w-screen-2xl container mx-auto md:px-20 px-4 '>
 <div className='mt-28 items-center justify-center text-center'>
@@ -28,7 +47,7 @@ const Course = () => {
 
 <div className='mt-12 grid grid-cols-1 md:grid-cols-4'>
 {
-    list.map((item)=>(
+    book.map((item)=>(
         <Card key={item.id} item={item}/>
     ))
 }
